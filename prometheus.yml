@@ -1,0 +1,35 @@
+# my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+scrape_configs:
+    - job_name: prometheus
+      static_configs:
+        - targets: ['localhost:9090']
+          labels:
+            instance: prometheus
+
+    - job_name: pushGateway
+      static_configs:
+      - targets: ['pushGateway:9091']
+        labels:
+            instance: pushGateway
+
+    - job_name: containers
+      static_configs:
+        - targets: ['cadvisor:8080']
+          labels:
+            instance: cadvisor
+
+    - job_name: nodeexporter
+      static_configs:
+        - targets: ['nodeexporter:9100']
+          labels:
+            instance: nodeexporter
+
+    - job_name: 'hyperledger_metrics'
+      scrape_interval: 10s
+      static_configs:
+      - targets: ['peer0.org1.example.com:9443', 'peer0.org2.example.com:9443', 'orderer.example.com:8443']
